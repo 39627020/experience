@@ -1,0 +1,9 @@
+﻿<#@ template language="c#" HostSpecific="True" #>
+<#@ output extension= ".cs" #>
+<#
+	TableHost host = (TableHost)(Host);
+	foreach (TableInfo tab in host.TableList){
+	#>
+	TRUNCATE TABLE <#= tab.TabName#>
+	<#}
+#>

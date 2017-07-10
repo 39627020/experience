@@ -1,0 +1,64 @@
+﻿<#@ template language="c#" HostSpecific="True" #>
+<#@ output extension= ".cs" #>
+<#
+	TableHost host = (TableHost)(Host);
+	host.Fieldlist.Sort(CodeCommon.CompareByintOrder);
+#>
+
+internal class <#= host.TableName #>Exportor : IDataExportor
+    {
+        private string _source;
+        private string _target;
+        public <#= host.TableName #>Exportor(string source,string target)
+        {
+            this._source = source;
+            this._target = target;
+        }
+
+        private SqlDataReader GetSouraceReader(string db)
+        {
+        	<#
+        	System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        	sb.Append("SELECT ");
+        	foreach (ColumnInfo c in host.Fieldlist){
+        	 sb.Append(c.ColumnName);
+        	 sb.Append(",");
+        	}
+        	sb=sb.Remove(sb.Length-1,1);
+        	sb.AppendLine("");
+        	sb.Append("FROM ");
+        	sb.Append(host.TableName);
+        	sb.Append(" WITH(NOLOCK) ORDER BY ID ASC");
+			#>
+            var sql = @"<#=sb.ToString()#>";
+
+            var dbhelper = DbManager.GetDbHelper(db);
+            return dbhelper.ExecuteReader(sql, CommandType.Text, null);
+        }
+
+        private void ColumnMapping(SqlBulkCopyColumnMappingCollection mapping)
+        {
+        	
+			<# foreach (ColumnInfo c in host.Fieldlist){ #>
+			 mapping.Add("<#= c.ColumnName #>", "<#= c.ColumnName #>");
+			<# } #>
+
+        }
+
+        public void Export()
+        {
+       		Console.WriteLine("Exec <#= host.TableName #>Exportor Export");
+         	DbManager.GetDbHelper(this._target).Execute("TRUNCATE TABLE <#= host.TableName#>");
+         	DbManager.GetDbHelper(this._target).Execute("SET IDENTITY_INSERT <#= host.TableName#> ON");
+            Console.WriteLine("{0} Source:{1},Target:{2} Exprot Start", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), this._source, this._target);
+            using (var reader = GetSouraceReader(this._source))
+            {
+                var bcp = DbManager.GetDbHelper(this._target).GetBCP();
+                this.ColumnMapping(bcp.ColumnMappings);
+                bcp.DestinationTableName = "<#= host.TableName #>";
+                bcp.WriteToServer(reader);
+            }
+            DbManager.GetDbHelper(this._target).Execute("SET IDENTITY_INSERT <#= host.TableName#> OFF");
+            Console.WriteLine("{0} Source:{1},Target:{2} Exprot Complated", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), this._source, this._target);
+        }
+    }

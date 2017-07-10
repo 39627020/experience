@@ -1,0 +1,9 @@
+﻿<#@ template language="c#" HostSpecific="True" #>
+<#@ output extension= ".cs" #>
+<#
+	TableHost host = (TableHost)(Host);
+	host.Fieldlist.Sort(CodeCommon.CompareByintOrder);
+#>
+<# foreach (ColumnInfo c in host.Fieldlist){ #>
+mapping.Add("<#= c.ColumnName #>", "<#= c.ColumnName #>");         	
+<# } #>
