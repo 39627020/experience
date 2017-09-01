@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ViewController {
 	@RequestMapping(value="/hello/{name}")
     public String index(@PathVariable String name,Model model) {
-		model.addAttribute("name", name);
+		model.addAttribute("name", "你好，" + name + "!");
 		return "hello";
     }
 }

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"></meta>
     <title>hello</title>
   </head>
 
   <body>
-    <h2>你好${name}</h2>    
+	<p class="label">Four multiplied by minus six multiplied by minus two module seven:</p>
+    <p class="answer" th:text="${4 * -6 * -2 % 7}">123</p>
+    <h2 th:text="${name}">你好阿东</h2>    
   </body>
 </html>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class JsonController {
 	@RequestMapping(value="/jsonstring")
     public String index(String name) {
+		int i = 12/0;
         return "json string";
     }
 	
