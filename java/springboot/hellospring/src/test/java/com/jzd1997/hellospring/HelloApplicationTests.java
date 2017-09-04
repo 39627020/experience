@@ -17,16 +17,21 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.jzd1997.hellospring.model.BlogProperties;
+import com.jzd1997.hellospring.service.UserService;
 
 import junit.framework.Assert;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class HelloApplicationTests {
-
+	@Autowired
+	private UserService userSerivce;
+	
 	private MockMvc mvc;
 	@Before
 	public void setUp() throws Exception {
+		// 准备，清空user表
+		userSerivce.deleteAllUsers();
 		mvc = MockMvcBuilders.standaloneSetup(new JsonController()).build();
 	}
 	@Test
@@ -51,4 +56,21 @@ public class HelloApplicationTests {
 		stringRedisTemplate.opsForValue().set("aaa", "111");
 		Assert.assertEquals("111", stringRedisTemplate.opsForValue().get("aaa"));
     }
+	
+	@Test
+	public void testJdbc() throws Exception {
+		// 插入5个用户
+		userSerivce.create("a", 1);
+		userSerivce.create("b", 2);
+		userSerivce.create("c", 3);
+		userSerivce.create("d", 4);
+		userSerivce.create("e", 5);
+		// 查数据库，应该有5个用户
+		Assert.assertEquals(5, userSerivce.getAllUsers().intValue());
+		// 删除两个用户
+		userSerivce.deleteByName("a");
+		userSerivce.deleteByName("e");
+		// 查数据库，应该有5个用户
+		Assert.assertEquals(3, userSerivce.getAllUsers().intValue());
+	}
 }
