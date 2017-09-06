@@ -4,6 +4,10 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.concurrent.Future;
+
+import javax.transaction.Transactional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,22 +20,20 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.jzd1997.hellospring.model.BlogProperties;
-import com.jzd1997.hellospring.service.UserService;
+import com.jzd1997.hellospring.controller.JsonController;
+import com.jzd1997.hellospring.domain.User;
+import com.jzd1997.hellospring.domain.UserRepository;
+import com.jzd1997.hellospring.task.AsyncTask;
 
 import junit.framework.Assert;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class HelloApplicationTests {
-	@Autowired
-	private UserService userSerivce;
 	
 	private MockMvc mvc;
 	@Before
 	public void setUp() throws Exception {
-		// 准备，清空user表
-		userSerivce.deleteAllUsers();
 		mvc = MockMvcBuilders.standaloneSetup(new JsonController()).build();
 	}
 	@Test
@@ -40,16 +42,12 @@ public class HelloApplicationTests {
 				.andExpect(status().isOk())
 				.andExpect(content().string(equalTo("json string")));
 	}
-	@Autowired
-	private BlogProperties blogProperties;
-	@Test
-	public void getProperty() throws Exception {
-		Assert.assertEquals(blogProperties.getName(), "程序猿DD");
-		Assert.assertEquals(blogProperties.getTitle(), "Spring Boot教程");
-	}
 	
 	@Autowired
 	private StringRedisTemplate stringRedisTemplate;
+	@Autowired
+	private UserRepository userRepository;
+	
 	@Test
 	public void test() throws Exception {
 		// 保存字符串
@@ -58,19 +56,41 @@ public class HelloApplicationTests {
     }
 	
 	@Test
-	public void testJdbc() throws Exception {
-		// 插入5个用户
-		userSerivce.create("a", 1);
-		userSerivce.create("b", 2);
-		userSerivce.create("c", 3);
-		userSerivce.create("d", 4);
-		userSerivce.create("e", 5);
-		// 查数据库，应该有5个用户
-		Assert.assertEquals(5, userSerivce.getAllUsers().intValue());
-		// 删除两个用户
-		userSerivce.deleteByName("a");
-		userSerivce.deleteByName("e");
-		// 查数据库，应该有5个用户
-		Assert.assertEquals(3, userSerivce.getAllUsers().intValue());
+	public void testJpa(){
+		userRepository.save(new User("韩菁菁",35));
+		userRepository.save(new User("卓洋洋",36));
+    }
+
+	@Test
+	public void testRedis(){
+		System.out.println(userRepository.findByName("卓洋洋").getAge());
+		System.out.println(userRepository.findByName("卓洋洋").getAge());
+    }
+
+	@Test
+	@Transactional
+	public void testTransaction(){
+		userRepository.save(new User("韩菁菁韩菁菁",35));
+		userRepository.save(new User("卓洋洋卓洋洋卓洋洋卓洋洋卓洋洋卓洋洋卓洋洋卓洋洋卓洋洋卓洋",36));
+    }	
+
+	@Autowired
+	private AsyncTask task;
+	
+	@Test
+	public void testTask() throws Exception {
+		long start = System.currentTimeMillis();
+		Future<String> task1 = task.doTaskOne();
+		Future<String> task2 = task.doTaskTwo();
+		Future<String> task3 = task.doTaskThree();
+		while(true) {
+			if(task1.isDone() && task2.isDone() && task3.isDone()) {
+				// 三个任务都调用完成，退出循环等待
+				break;
+			}
+			Thread.sleep(1000);
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("任务全部完成，总耗时：" + (end - start) + "毫秒");
 	}
 }

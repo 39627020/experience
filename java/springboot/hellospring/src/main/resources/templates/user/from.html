@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>index</title>
+  </head>
+
+  <body>
+	<h2>用户注册</h2>
+     <form action="/user/save" method="post">
+     	<input type="hidden" name="id" th:value="${user.id}" />
+		<div>
+			姓名<input type="text" name="name" th:value="${user.name}"/>
+		</div>
+		<div>
+			年龄<input type="text" name="age" th:value="${user.age}"/>
+		</div>
+		<div>
+			<button type="submit">提交</button>
+		</div>
+     </form>	
+  </body>
+</html>
