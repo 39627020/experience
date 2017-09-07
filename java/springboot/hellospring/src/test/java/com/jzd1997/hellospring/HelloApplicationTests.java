@@ -4,8 +4,10 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.File;
 import java.util.concurrent.Future;
 
+import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
 
 import org.junit.Before;
@@ -13,8 +15,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -92,5 +98,30 @@ public class HelloApplicationTests {
 		}
 		long end = System.currentTimeMillis();
 		System.out.println("任务全部完成，总耗时：" + (end - start) + "毫秒");
+	}
+	
+	@Autowired
+	private JavaMailSender mailSender;
+	@Test
+	public void testSendMail() throws Exception {
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("39627020@qq.com");
+		message.setTo("1739001514@qq.com");
+		message.setSubject("主题：简单邮件");
+		message.setText("测试邮件内容");
+		mailSender.send(message);
+	}
+	
+	@Test
+	public void sendAttachmentsMail() throws Exception {
+		MimeMessage mimeMessage = mailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+		helper.setFrom("39627020@qq.com");
+		helper.setTo("1739001514@qq.com");
+		helper.setSubject("主题：有附件");
+		helper.setText("有附件的邮件");
+		FileSystemResource file = new FileSystemResource(new File("C:\\Users\\jiangzd\\Pictures\\docker.jpg"));
+		helper.addAttachment("附件-1.jpg", file);
+		mailSender.send(mimeMessage);
 	}
 }
