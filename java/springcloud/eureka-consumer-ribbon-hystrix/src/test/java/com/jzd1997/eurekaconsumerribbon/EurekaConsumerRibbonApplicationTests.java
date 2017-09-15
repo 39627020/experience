@@ -1,4 +1,4 @@
-package com.jzd1997.eurekaclient;
+package com.jzd1997.eurekaconsumerribbon;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,9 +7,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class EurekaClientApplicationTests {
+public class EurekaConsumerRibbonApplicationTests {
 
 	@Test
 	public void contextLoads() {
 	}
+
 }

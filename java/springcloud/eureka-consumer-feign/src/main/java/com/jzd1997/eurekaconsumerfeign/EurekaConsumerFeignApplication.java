@@ -1,15 +1,16 @@
-package com.jzd1997.eurekaclient;
+package com.jzd1997.eurekaconsumerfeign;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.hystrix.EnableHystrix;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 
 @SpringBootApplication
+@EnableFeignClients
 @EnableDiscoveryClient
-public class EurekaClientApplication {
+public class EurekaConsumerFeignApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EurekaClientApplication.class, args);
+		SpringApplication.run(EurekaConsumerFeignApplication.class, args);
 	}
 }

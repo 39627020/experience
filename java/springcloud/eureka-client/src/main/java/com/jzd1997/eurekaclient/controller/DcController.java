@@ -15,7 +15,11 @@ public class DcController {
     private String serverName;
     
     @GetMapping("/dc")
-    public String dc() {
+    public String dc() throws InterruptedException {
+    	int rand = (int)(Math.random()*10.0);
+    	if(rand>5) {
+    		Thread.sleep(5000L);	
+    	}
         String services = "From " + serverName + " Services: " + discoveryClient.getServices();
         System.out.println(services);
         return services;
