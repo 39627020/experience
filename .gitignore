@@ -1,0 +1,12 @@
+
+java/SocketClient/\.project
+
+java/SocketClient/\.classpath
+
+java/SocketClient/\.settings/
+
+*.class
+
+java/SocketService/\.classpath
+
+java/SocketService/\.settings/

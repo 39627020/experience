@@ -3,6 +3,9 @@ package com.jzd1997.hellospring.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +15,16 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 public class JsonController {
-	
+    @Autowired
+    DiscoveryClient discoveryClient;
+
+    @GetMapping("/dc")
+    public String dc() {
+        String services = "Services: " + discoveryClient.getServices();
+        System.out.println(services);
+        return services;
+    }
+
     @ApiOperation(value="获取JSON String", notes="notes:获取JSON String")
     @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Long")
 	@RequestMapping(value="/jsonstring")
