@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ public class AccessFilter extends ZuulFilter  {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
         HttpServletResponse response = ctx.getResponse();
+        HttpSession session = request.getSession(true);        
         log.info(String.format("%s request to %s", request.getMethod(), request.getRequestURL().toString()));
         Object accessToken = request.getParameter("accessToken");
         if(accessToken == null) {
@@ -44,6 +46,7 @@ public class AccessFilter extends ZuulFilter  {
 //            ctx.setResponseStatusCode(401);
             return null;
         }
+        session.setAttribute("accessToken", accessToken);
         log.info("access token ok");
         return null;
     }
