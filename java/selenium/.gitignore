@@ -1,0 +1,14 @@
+.classpath
+org.eclipse.jdt.core.prefs
+org.eclipse.wst.common.project.facet.core.xml
+.DS_Store
+.svn/
+target/
+*.xcuserstate
+project.xcworkspace
+xcuserdata
+UserInterfaceState.xcuserstate
+project.xcworkspace/
+xcuserdata/
+UserInterface.xcuserstate
+/02_Design/接口设计/~$移动项目管理平台技术说明.xlsx

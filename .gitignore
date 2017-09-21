@@ -10,3 +10,7 @@ java/SocketClient/\.settings/
 java/SocketService/\.classpath
 
 java/SocketService/\.settings/
+
+java/selenium/Selenium/\.project
+
+java/selenium/Selenium/\.settings/
