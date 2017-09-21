@@ -67,11 +67,11 @@ public class HelloApplicationTests {
 		userRepository.save(new User("卓洋洋",36));
     }
 
-	@Test
-	public void testRedis(){
-		System.out.println(userRepository.findByName("卓洋洋").getAge());
-		System.out.println(userRepository.findByName("卓洋洋").getAge());
-    }
+//	@Test
+//	public void testRedis(){
+//		System.out.println(userRepository.findByName("卓洋洋").getAge());
+//		System.out.println(userRepository.findByName("卓洋洋").getAge());
+//    }
 
 	@Test
 	@Transactional
