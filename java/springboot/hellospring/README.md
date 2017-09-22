@@ -4,7 +4,9 @@
 - 通过@PathVariable从URI当匹配参数
 - 通过@SpringBootTest完成了一个简单的单元测试
 - 添加多配置文件
-
-## 未完成部分
-- view子目录解析有问题
-- view当中从model取数据到Thymeleaf模板，无法显示
+- 利用Spring session实现session共享
+- 集成Swagger2实现自动生成api文档
+- 实现定时任务
+- 实现AOP统一日志
+- 实现发送邮件
+- 实现JPA持久化
