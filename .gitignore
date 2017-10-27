@@ -4,12 +4,14 @@ java/SocketClient/\.project
 java/SocketClient/\.classpath
 
 java/SocketClient/\.settings/
+java/SocketClient/target
 
 *.class
 
 java/SocketService/\.classpath
 
 java/SocketService/\.settings/
+java/SocketService/target
 
 java/selenium/Selenium/\.project
 
