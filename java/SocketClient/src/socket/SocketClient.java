@@ -15,7 +15,7 @@ public class SocketClient {
         try {
             // 1、创建客户端Socket，指定服务器地址和端口
             // Socket socket=new Socket("127.0.0.1",5200);
-            Socket socket = new Socket("192.168.1.250", 5200);
+            Socket socket = new Socket("192.168.1.250", 5209);
             System.out.println("客户端启动成功");
             // 2、获取输出流，向服务器端发送信息
             // 向本机的52000端口发出客户请求
