@@ -1,23 +1,37 @@
-
-java/SocketClient/\.project
-
-java/SocketClient/\.classpath
-
-java/SocketClient/\.settings/
-java/SocketClient/target
-
+# Compiled class file
 *.class
+*.iml
+*.idea
+target/
+logs/
 
-java/SocketService/\.classpath
+# Log file
+*.log
 
-java/SocketService/\.settings/
-java/SocketService/target
+# BlueJ files
+*.ctxt
 
-java/selenium/Selenium/\.project
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
 
-java/selenium/Selenium/\.settings/
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
 
-javascript/angular/\.idea/
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
 
-javascript/studynode/\.idea/
+*velocity.log*
+
+# Eclipse #
+.classpath
+.project
+.settings/
+
+*/target/
+*/node_modules/
 javascript/studynode/node_modules/
